@@ -34,6 +34,11 @@ void ARollABallPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	//Custom Input Axis Bindings
+	InputComponent->BindAxis("MoveForward", this, &ARollABallPlayer::MoveForward);
+	InputComponent->BindAxis("MoveRight", this, &ARollABallPlayer::MoveRight);
+	//Custom Action Binding
+	InputComponent->BindAction("Jump", IE_Pressed, this, &ARollABallPlayer::Jump);
 }
 
 void ARollABallPlayer::MoveRight(float Value)
