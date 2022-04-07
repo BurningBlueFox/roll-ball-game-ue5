@@ -20,13 +20,21 @@ ARollABallPlayer::ARollABallPlayer()
 	SpringArm->SetupAttachment(Mesh);
 	Camera->SetupAttachment(SpringArm);
 
+	//Set up physics
+	Mesh->SetSimulatePhysics(true);
+
+	SpringArm->bInheritPitch = false;
+	SpringArm->bInheritRoll = false;
+	SpringArm->bInheritYaw = false;
+
 }
 
 // Called when the game starts or when spawned
 void ARollABallPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	MoveForce *= Mesh->GetMass();
+	JumpImpulse *= Mesh->GetMass();
 }
 
 // Called to bind functionality to input
@@ -43,13 +51,21 @@ void ARollABallPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void ARollABallPlayer::MoveRight(float Value)
 {
+	const FVector Right = Camera->GetRightVector() * MoveForce * Value;
+	Mesh->AddForce(Right);
 }
 
 void ARollABallPlayer::MoveForward(float Value)
 {
+	const FVector Forward = Camera->GetForwardVector() * MoveForce * Value;
+	Mesh->AddForce(Forward);
 }
 
 void ARollABallPlayer::Jump()
 {
+	if(JumpCount >= MaxJumpCount) return;
+	
+	Mesh->AddImpulse(FVector(0, 0, JumpImpulse));
+	JumpCount++;
 }
 
