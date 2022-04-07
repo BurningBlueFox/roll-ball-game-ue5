@@ -8,7 +8,7 @@
 // Sets default values
 ARollABallPlayer::ARollABallPlayer()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 	//Create Components
@@ -27,6 +27,7 @@ ARollABallPlayer::ARollABallPlayer()
 	SpringArm->bInheritRoll = false;
 	SpringArm->bInheritYaw = false;
 
+	Mesh->OnComponentHit.AddDynamic(this, &ARollABallPlayer::OnHit);
 }
 
 // Called when the game starts or when spawned
@@ -63,9 +64,19 @@ void ARollABallPlayer::MoveForward(float Value)
 
 void ARollABallPlayer::Jump()
 {
-	if(JumpCount >= MaxJumpCount) return;
-	
+	if (JumpCount >= MaxJumpCount) return;
+
 	Mesh->AddImpulse(FVector(0, 0, JumpImpulse));
 	JumpCount++;
 }
 
+void ARollABallPlayer::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+                             FVector NormalImpulse, const FHitResult& Hit)
+{
+	const float HitDirection = Hit.Normal.Z;
+
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, FString::Printf(TEXT("Z Normal: %f"), HitDirection));
+
+	if (HitDirection > 0)
+		JumpCount = 0;
+}

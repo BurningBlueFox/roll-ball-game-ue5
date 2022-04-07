@@ -38,13 +38,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 MaxJumpCount = 1;
 
-public:	
-
+public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-
 	int32 JumpCount = 0;
 
 	//Functions
@@ -52,4 +50,7 @@ private:
 	void MoveForward(float Value);
 	void Jump();
 
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	           FVector NormalImpulse, const FHitResult& Hit);
 };
