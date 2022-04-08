@@ -3,6 +3,8 @@
 
 #include "RollABallItemBase.h"
 
+#include "RollABall/Game/RollABallPlayer.h"
+
 // Sets default values
 ARollABallItemBase::ARollABallItemBase()
 {
@@ -24,9 +26,12 @@ void ARollABallItemBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent, 
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                       const FHitResult& SweepResult)
 {
+	if (Cast<ARollABallPlayer>(OtherActor) != nullptr)
+		Collected();
 }
 
 void ARollABallItemBase::Collected_Implementation()
 {
 	
+	//TODO - Do game mode stuff
 }
