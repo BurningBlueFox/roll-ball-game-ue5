@@ -73,10 +73,6 @@ void ARollABallPlayer::Jump()
 void ARollABallPlayer::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                              FVector NormalImpulse, const FHitResult& Hit)
 {
-	const float HitDirection = Hit.Normal.Z;
-
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, FString::Printf(TEXT("Z Normal: %f"), HitDirection));
-
-	if (HitDirection > 0)
+	if (const float HitDirection = Hit.Normal.Z; HitDirection > 0)
 		JumpCount = 0;
 }
